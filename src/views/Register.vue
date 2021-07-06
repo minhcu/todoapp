@@ -70,6 +70,7 @@ export default {
 }
 .register {
   height: 100vh;
+  display: flex;
   .box {
     width: 600px;
     display: flex;
