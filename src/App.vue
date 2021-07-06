@@ -7,6 +7,7 @@
       <div class="link">
         <router-link to="/">Home</router-link>
         <router-link to="/register">Register</router-link>
+        <router-link to="/search">Search</router-link>
       </div>
       <div class="copyright">Đây là Copyright</div>
     </div>
@@ -31,8 +32,6 @@ body {
   text-align: center;
   color: #2c3e50;
   background-color: #42b983;
-  margin-left: 15%;
-  padding: 50px 0;
   display: flex;
   justify-content: center;
 }
@@ -85,5 +84,7 @@ body {
 }
 .content {
   width: 85%;
+  margin-left: 15%;
+  padding: 0 25px;
 }
 </style>

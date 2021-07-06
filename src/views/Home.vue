@@ -54,12 +54,14 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  width: 1200px;
+  max-width: 1200px;
   margin: auto;
-  background-color: white;
+  padding: 50px 0;
   .userlist {
     border-radius: 10px;
     box-shadow: 0 0 5px #d8d4d4;
+    background-color: white;
+    overflow: hidden;
     .header {
       display: flex;
       font-weight: 700;
