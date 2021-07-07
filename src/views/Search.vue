@@ -1,5 +1,7 @@
 <template>
-  <div class="search"></div>
+  <div class="search">
+    <input type="text" placeholder="Search Name..">
+  </div>
 </template>
 
 <script>
@@ -8,6 +10,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.search {
+  height: 100vh;
+}
 </style>

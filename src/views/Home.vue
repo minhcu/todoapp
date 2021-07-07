@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <div class="search">
+      <i class="fas fa-search"></i>
+      <input type="text" v-model="searchQuery" placeholder="Search Name.." />
+    </div>
     <div class="userlist">
       <div class="header">
         <p class="id">ID</p>
@@ -7,12 +11,14 @@
         <p class="phone">Phone</p>
         <p class="action">Action</p>
       </div>
-      <div class="list" v-for="user in users" :key="user.id">
+      <div class="list" v-for="user in searchedNameList" :key="user.id">
         <p class="id">{{ user.id }}</p>
         <p class="name">{{ user.name }}</p>
         <p class="phone">{{ user.phoneNumber }}</p>
         <p class="action">
-          <span class="btn detail" @click="goToUserDetail(user.id)">Detail</span>
+          <span class="btn detail" @click="goToUserDetail(user.id)"
+            >Detail</span
+          >
           <span class="btn delete" @click="deleteUser(user.id)">Delete</span>
         </p>
       </div>
@@ -28,7 +34,8 @@ export default {
   name: "Home",
   data() {
     return {
-      users: "",
+      users: [],
+      searchQuery: "",
     };
   },
   async created() {
@@ -42,12 +49,22 @@ export default {
       this.$router.push(`/user/${id}`);
     },
     async deleteUser(id) {
-      await axios.delete(`https://60d73250307c300017a5f71e.mockapi.io/v1/users/${id}`)
+      await axios.delete(
+        `https://60d73250307c300017a5f71e.mockapi.io/v1/users/${id}`
+      );
       const userList = await axios.get(
         "https://60d73250307c300017a5f71e.mockapi.io/v1/users"
       );
       this.users = userList.data;
-      }
+    },
+  },
+  computed: {
+    searchedNameList() {
+      let nameList = this.users.filter((test) => {
+        return test.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+      });
+      return nameList;
+    },
   },
 };
 </script>
@@ -107,6 +124,27 @@ export default {
       .delete {
         background-color: red;
       }
+    }
+  }
+  .search {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      color: white;
+      font-size: 30px;
+      padding: 5px;
+    }
+    input {
+      background-color: #f4f8f7;
+      outline: none;
+      border-radius: 10px;
+      border: none;
+      padding: 15px;
+    }
+    input:focus {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     }
   }
 }
