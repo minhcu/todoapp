@@ -7,7 +7,6 @@
       <div class="link">
         <router-link to="/">Home</router-link>
         <router-link to="/register">Register</router-link>
-        <router-link to="/search">Search</router-link>
       </div>
       <div class="copyright">Đây là Copyright</div>
     </div>
