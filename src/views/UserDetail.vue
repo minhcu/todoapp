@@ -1,9 +1,6 @@
 <template>
   <div class="userdetail">
     <div class="userbox">
-      <div class="avatar">
-        <img :src="user.avatar" />
-      </div>
       <div class="info">
         <div class="inputbox">
           <span v-if="btnCheck">{{ user.name }}</span>
@@ -14,7 +11,7 @@
             ref="name"
             placeholder="Name"
             required
-            v-model="user.name"
+            :value="user.name"
             @blur="nameValidate"
           />
           <div v-if="!this.nameWarning" class="warning">Điền vào bạn ơi!!!</div>
@@ -28,7 +25,7 @@
             ref="phone"
             placeholder="Phone"
             required
-            v-model="user.phoneNumber"
+            :value="user.phoneNumber"
             @blur="phoneValidate"
           />
           <div v-if="!this.phoneWarning" class="warning">Điền vào bạn ơi!!!</div>
@@ -44,23 +41,19 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   name: "UserDetail",
   data() {
     return {
-      user: "",
+      user: {},
       btnCheck: true,
       nameWarning: true,
       phoneWarning: true,
     };
   },
-  async created() {
-    const userdetail = await axios.get(
-      `https://60d73250307c300017a5f71e.mockapi.io/v1/users/${this.$route.params.id}`
-    );
-    this.user = userdetail.data;
+  created() {
+    this.user = this.$store.state.usersData.find(user => user.id == this.$route.params.id);
   },
   methods: {
     nameValidate() {
@@ -77,23 +70,22 @@ export default {
       this.btnCheck = !this.btnCheck;
       return;
     },
-    async cancelEdit() {
-      const userdetail = await axios.get(
-        `https://60d73250307c300017a5f71e.mockapi.io/v1/users/${this.$route.params.id}`
-      );
-      this.user = userdetail.data;
+    cancelEdit() {
+      this.user = this.$store.state.usersData.find(user => user.id == this.$route.params.id);
       this.btnCheck = !this.btnCheck;
       return;
     },
-    async updateUserDetail() {
+    updateUserDetail() {
+      if (!(this.nameWarning && this.phoneWarning)) return Event.stopPropagation;
+      this.user.name = this.$refs.name.value;
+      this.user.phoneNumber = this.$refs.phone.value;
       this.btnCheck = !this.btnCheck;
-      await axios.put(
-        `https://60d73250307c300017a5f71e.mockapi.io/v1/users/${this.$route.params.id}`,
-        this.user
-      );
+      const index = this.$store.state.usersData.findIndex(user => user.id == this.$route.params.id);
+      const data = this.user;
+      this.$store.commit('updateUser', data, index);
       return;
     },
-  },
+  }
 };
 </script>
 

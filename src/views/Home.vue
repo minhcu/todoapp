@@ -28,39 +28,24 @@
 
 <script>
 // @ is an alias to /src
-import axios from "axios";
-
 export default {
   name: "Home",
   data() {
     return {
-      users: [],
       searchQuery: "",
     };
-  },
-  async created() {
-    const userList = await axios.get(
-      "https://60d73250307c300017a5f71e.mockapi.io/v1/users"
-    );
-    this.users = userList.data;
   },
   methods: {
     goToUserDetail(id) {
       this.$router.push(`/user/${id}`);
     },
-    async deleteUser(id) {
-      await axios.delete(
-        `https://60d73250307c300017a5f71e.mockapi.io/v1/users/${id}`
-      );
-      const userList = await axios.get(
-        "https://60d73250307c300017a5f71e.mockapi.io/v1/users"
-      );
-      this.users = userList.data;
-    },
+    deleteUser(id) {
+      this.$store.commit('deleteUser', id);
+    }
   },
   computed: {
     searchedNameList() {
-      let nameList = this.users.filter((test) => {
+      let nameList = this.$store.state.usersData.filter((test) => {
         return test.name.toLowerCase().includes(this.searchQuery.toLowerCase());
       });
       return nameList;

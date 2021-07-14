@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
@@ -31,29 +30,25 @@ export default {
   },
   methods: {
     nameValidate() {
-      console.log(this.name.length > 0 ? true:false)
       return this.name.length > 0 ? this.nameWarning = true: this.nameWarning = false
     },
     phoneValidate() {
       return this.phone.length > 0 ? this.phoneWarning = true: this.phoneWarning = false
     },
-    async addNewUser() {
+    addNewUser() {
       this.nameValidate();
       this.phoneValidate();
-      if (!(this.nameWarning && this.phoneWnameWarning)) {
-        return Event.stopPropagation;
+      if (!(this.nameWarning && this.phoneWarning)) return Event.stopPropagation;
+      const id = this.$store.state.usersData.length - 1;
+      const user = {
+        name: this.name,
+        phoneNumber: this.phone,
+        id: Number(this.$store.state.usersData[id].id) + 1
       }
-      const name = this.$refs.name.value;
-      const phone = this.$refs.phone.value;
-      await axios.post(
-        "https://60d73250307c300017a5f71e.mockapi.io/v1/users/",
-        {
-          name: name,
-          phoneNumber: phone,
-        }
-      );
+      this.$store.commit('addNewUser', user)
       this.name= "";
       this.phone = "";
+      this.$router.push("/")
     },
   }
 };
